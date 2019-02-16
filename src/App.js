@@ -1,28 +1,84 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
+const BasicExample = () => (
+  <Router>
+    <div>
+      <ul>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/menu">Menu</Link>
+        </li>
+        <li>
+          <Link to="/our-story">Our Story</Link>
+        </li>
+        <li>
+          <Link to="/locations">Locations</Link>
+        </li>
+        <li>
+          <Link to="/catering">Catering</Link>
+        </li>
+      </ul>
 
-export default App;
+      <hr />
+
+      <Route exact path="/" component={Home} />
+      <Route path="/menu" component={Menu} />
+      <Route path="/our-story" component={OurStory} />
+      <Route path="/locations" component={Locations} />
+      <Route path="/catering" component={Catering} />
+    </div>
+  </Router>
+);
+
+const Home = () => (
+  <div>
+    <h2>Home</h2>
+  </div>
+);
+
+const Menu = () => (
+  <div>
+    <h2>Menu</h2>
+  </div>
+);
+
+const OurStory = ({ match }) => (
+  <div>
+    <h2>Locations</h2>
+    <ul>
+      <li>
+        <Link to={`${match.url}/rendering`}>Rendering with React</Link>
+      </li>
+      <li>
+        <Link to={`${match.url}/components`}>Components</Link>
+      </li>
+      <li>
+        <Link to={`${match.url}/props-v-state`}>Props v. State</Link>
+      </li>
+    </ul>
+
+    <Route path={`${match.url}/:locationId`} component={Locations} />
+    <Route
+      exact
+      path={match.url}
+      render={() => <h3>Please select a location.</h3>}
+    />
+  </div>
+);
+
+const Locations = ({ match }) => (
+  <div>
+    <h3>{match.params.locationId}</h3>
+  </div>
+);
+
+const Catering = () => (
+  <div>
+    <h2>Catering</h2>
+  </div>
+);
+
+export default BasicExample;
